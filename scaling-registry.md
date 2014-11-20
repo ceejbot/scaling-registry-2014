@@ -25,7 +25,7 @@
 ---
 
 # [fit] Jacques Marneweck
-# [fit] Benjamine Coe
+# [fit] Benjamin Coe
 # [fit] Laurie Voss
 
 ^ The team. I did none of this stuff alone. Jacques for SmartOS expertise. Ben is my comrade in dev ops arms. Laurie is our CTO.
@@ -116,6 +116,20 @@
 
 ---
 
+# [fit] Re-architecture 2
+# [fit] Many couchdbs
+
+^ Separate writes from reads. Separate out replication.
+
+---
+
+# [fit] General lesson #2
+# [fit] understand your db deeply
+
+^ The stabilization phase happened because we finally understood it. We became aware that networking flickers caused couchdb replication to break, and so we could tune the retries AND write a fall-back heal script.
+
+---
+
 # [fit] Monitoring
 # [fit] & alerts
 
@@ -131,13 +145,6 @@
 
 ---
 
-# [fit] Re-architecture 2
-# [fit] Many couchdbs
-
-^ Separate writes from reads. Separate out replication.
-
----
-
 ## [fit] 1: reactive
 ## [fit] monitor deeply
 ## [fit] fix things quickly
@@ -149,13 +156,6 @@
 ## [fit] 2: proactive
 ## [fit] self-healing monitoring
 ## [fit] \(also things don't break)
-
----
-
-# [fit] General lesson #2
-# [fit] understand your db deeply
-
-^ The stabilization phase happened because we finally understood it. We became aware that networking flickers caused couchdb replication to break, and so we could tune the retries AND write a fall-back heal script.
 
 ---
 
