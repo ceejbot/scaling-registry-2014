@@ -16,6 +16,8 @@
 # [fit] lessons learned
 # [fit] generalizations
 
+^ Not just what we did, but larger lessons I learned from doing this. Share with you.
+
 ---
 
 ![](assets/I_enjoy_learning.png)
@@ -54,6 +56,8 @@
 # [fit] peak 28 million dls/day
 # [fit] > 100K packages
 
+^ Today. How did we get there?
+
 ---
 
 # [fit] side project
@@ -75,14 +79,16 @@
 
 ---
 
+# [fit] General lesson #1
 # [fit] Put a cache on it
 
-^ Nov 2013 it stabilized Fastly's CDN. We now cache aggressively. Geolocation makes it much faster for you all here in Europe-- mirrors aren't needed any more.
+^ Nov 2013 put Fastly's CDN in front of it. Data not changing, like tarballs? Cache it. We now cache aggressively. Geolocal POPs make Aus & Euro mirrors less crucial. (Registry got more expensive to run.)
 
 ---
 
 # [fit] Re-architecture 1
 # [fit] move tarballs out
+# [fit] of poor couchdb
 
 ^ The first time node is involved in the registry service! Tarballs are served from joyent's manta, which is an object store thing backed by postgres.
 
@@ -137,7 +143,7 @@
 
 ---
 
-# [fit] General lesson #1
+# [fit] General lesson #3
 # [fit] Add monitoring after
 # [fit] every outage
 
@@ -149,13 +155,15 @@
 ## [fit] monitor deeply
 ## [fit] fix things quickly
 
-^ Stabilization stage 1: react quickly.
+^ Stabilization stage 1: react quickly. Notice when we're down & fix by hand.
 
 ---
 
 ## [fit] 2: proactive
 ## [fit] self-healing monitoring
 ## [fit] \(also things don't break)
+
+^ Monitor checks also fix problems where possible. Deeper problems fixed with engineering.
 
 ---
 
@@ -164,7 +172,7 @@
 # [fit] Superficially
 # [fit] similar.
 
-^ Pretty reliable. We know when our providers are down before they do sometimes. Manta is gone-- tarballs are served from a file system behind nginx. We have a write primary & a second replication primary, and a bunch of leaves that just read from the replication primary.
+^ Pretty reliable. We know when our providers are down before they do sometimes. Manta is gone-- tarballs are served from a file system behind nginx. Writes are separated from reads. Scaled by throwing hardware & $ at the problem.
 
 ---
 
@@ -172,19 +180,21 @@
 # [fit] 70/30 west/east split
 # [fit] 52 running instances, variable
 
-^ DJ mode: The new infrastructure would run alongside the old one. I'd fade the old one out & the new one in & registry users wouldn't notice the transition.
+^ Another big change: we moved to Ubuntu on AWS with significant wins in compatibility & tooling.
 
 ---
 
 ![fit](assets/registry_arch_nov2014.png)
 
-^ The registry today.
+^ The registry today. WAY fewer instances & cheaper to run. Extra capacity for redundancy: if an AWS region goes down, we're fine.
 
 ---
 
 # [fit] 50/50 AWS region split
 # [fit] haproxy to load balance
-# [fit] far fewer instances
+# [fit] no AWS-specific magic
+
+^ We use as few AWS features as possible to keep our options open.
 
 ---
 
@@ -192,18 +202,22 @@
 # [fit] haproxy / CouchDB
 # [fit] nginx + a filesystem
 
+^ Simple pieces with good visibility.
+
 ---
 
 # [fit] behind the scenes
 # [fit] ansible / nagios
 # [fit] InfluxDB+Grafana
 
+^ Grown-up ops habits.
+
 ---
 
-# [fit] General lesson #3
+# [fit] General lesson #4
 # [fit] metrics
 
-^ Talk about what they are
+^ Metrics
 
 ---
 
@@ -237,8 +251,10 @@
 
 ---
 
-# [fit] General lesson #4
+# [fit] General lesson #5
 # [fit] automate
+
+^ Chef, Puppet, Salt, Ansible: USE SOMETHING.
 
 ---
 
@@ -249,7 +265,7 @@
 
 ---
 
-# [fit] General lesson #5
+# [fit] General lesson #6
 # [fit] the goal is to be
 # [fit] BORING
 
