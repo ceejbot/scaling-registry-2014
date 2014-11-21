@@ -47,16 +47,16 @@
 ---
 
 # [fit] January 2014
-# [fit] 8 million dls/day
 # [fit] 60K packages
+# [fit] 8 million dls/day
 
 ---
 
 # [fit] Nov 2014
-# [fit] peak 28 million dls/day
 # [fit] > 100K packages
+# [fit] 28 million dls/day peak
 
-^ Today. How did we get there?
+^ Today. How did we get there? Story of how we went from being on fire to being boring.
 
 ---
 
@@ -163,7 +163,7 @@
 ## [fit] self-healing monitoring
 ## [fit] \(also things don't break)
 
-^ Monitor checks also fix problems where possible. Deeper problems fixed with engineering.
+^ Monitor checks also fix problems where possible. Deeper problems fixed with engineering. Unit tests for your deployment.
 
 ---
 
