@@ -216,12 +216,9 @@
 
 # [fit] General lesson #4
 # [fit] metrics
+# [fit] for everything
 
-^ Metrics
-
----
-
-![](assets/grafana_shot.png)
+^ All of your services & instances should report metrics that can be visualized.
 
 ---
 
@@ -229,18 +226,14 @@
 ## [fit] request latency
 ## [fit] event counts
 
----
-
-# [fit] Metrics for everything.
-
-^ Process restarts; bytes in & out of load balancers. We saved $20K on our networking bandwidth bill by monitoring what our haproxies were doing & choking off a healthcheck gone mad.
+^ Process restarts; bytes in & out of load balancers.
 
 ---
 
 # [fit] metrics ==
 # [fit] visibility
 
-^ What is your system doing? What does it look like on a normal day? What are its trends?
+^ What is your system doing? What does it look like on a normal day? What are its trends? We saved $20K on our networking bandwidth bill by monitoring what our haproxies were doing & choking off a healthcheck gone mad.
 
 ---
 
@@ -261,7 +254,7 @@
 # [fit] no special snowflakes
 # [fit] every instance can be replaced
 
-^ Do this. All hosts are configurable remotely & can be replaced easily. Discipline. AWS reboot apocalypse was boring for us.
+^ All hosts are configurable remotely & can be replaced easily. Discipline. AWS reboot apocalypse was boring for us.
 
 ---
 
