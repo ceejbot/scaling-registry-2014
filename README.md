@@ -5,6 +5,6 @@ My talk for Nodeconf OneShot Budapest 2014 on lessons learned scaling the npm re
 * [slide deck](scaling-registry.md)  
 * [PDF](scaling-registry.pdf)
 * [slides on SpeakerDeck](https://speakerdeck.com/ceejbot/devops-at-npm-scaling-the-registry)
-* video link TBD
+* [video presentation](https://www.youtube.com/watch?v=tRitXorSH6M)
 
 Both images come from [The Profound Programmer](http://theprofoundprogrammer.com).
