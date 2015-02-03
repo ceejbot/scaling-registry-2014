@@ -122,9 +122,9 @@ Diagram of the architecture, showing one box with couchdb.
 
 ---
 
-# [fit] databases
-# [fit] know yours
-# [fit] know where it's terrible
+# [fit] don't make your
+# [fit] poor database
+# [fit] do things it's bad at
 
 ^ Binary blobs don't belong in dbs that need to base64 encode them.
 
@@ -133,7 +133,7 @@ Diagram of the architecture, showing one box with couchdb.
 # [fit] step 2: tarballs
 # [fit] get them out of couchdb
 
-^ They're now sitting on a filesystem served by nginx. 1 aws instance is more than capable of handling what load gets through from Fastly, but we have several for region redundancy. Node does the work of pulling tarballs out.
+^ Out of couchdb & into Joyent's Manta, an object store backed by postgres with a nice API. They're now sitting on a filesystem served by nginx. 1 aws instance is more than capable of handling what load gets through from Fastly, but we have several for region redundancy. Node does the work of pulling tarballs out.
 
 ----
 
@@ -141,39 +141,12 @@ Diagram of the architecture, showing one box with couchdb.
 
 ^ January 2014. This was more or less holding up under the load, though there were still outages with absolutely no visibility into why.
 
-
-
-
----
-
-# [fit] Nov 2014
-# [fit] > 100K packages
-# [fit] 28 million dls/day peak
-
-^ Today. How did we get there? Story of how we went from being on fire to being boring.
-
-
----
-
-# [fit] General lesson #1
-# [fit] Put a cache on it
-
-^ Nov 2013 put Fastly's CDN in front of it. Data not changing, like tarballs? Cache it. We now cache aggressively. Geolocal POPs make Aus & Euro mirrors less crucial. (Registry got more expensive to run.)
-
----
-
-# [fit] Re-architecture 1
-# [fit] move tarballs out
-# [fit] of poor couchdb
-
-^ The first time node is involved in the registry service! Tarballs are served from joyent's manta, which is an object store thing backed by postgres.
-
 ---
 
 # [fit] ![inline](assets/npm.png) February 2014
 # [fit] company founded
 
-^ The problem was going to take money & dedicated engineering to solve.
+^ It takes money to pay for the CDN & for dedicated engineering working on the rearchitecture.
 
 ---
 
@@ -181,28 +154,15 @@ Diagram of the architecture, showing one box with couchdb.
 # [fit] hand-built CouchDB + Spidermonkey
 # [fit] bash scripts to deploy
 
-^ Everything was hand-built. 10 special snowflake servers.
+^ Everything was hand-built. 10 special snowflake servers. This is when I arrive. PagerDuty account: first thing I did. Nagios all hooked up & monitoring basic host health. 10 hosts total.
 
 ---
 
-# [fit] Twitter tells us
-# [fit] when we're down
+# [fit] step 3: monitoring
+# [fit] PagerDuty tells us about problems
+# [fit] Not Twitter.
 
-^ This is when I arrive. PagerDuty account: first thing I did. Nagios all hooked up & monitoring basic host health. 10 hosts total.
-
----
-
-# [fit] Re-architecture 2
-# [fit] Many couchdbs
-
-^ Separate writes from reads. Separate out replication.
-
----
-
-# [fit] General lesson #2
-# [fit] understand your db deeply
-
-^ The stabilization phase happened because we finally understood it. We became aware that networking flickers caused couchdb replication to break, and so we could tune the retries AND write a fall-back heal script.
+^ Nagios is a horror but it's state of the art, apparently, and it is solid enough to monitor your other monitoring systems.
 
 ---
 
@@ -213,15 +173,7 @@ Diagram of the architecture, showing one box with couchdb.
 
 ---
 
-# [fit] General lesson #3
-# [fit] Add monitoring after
-# [fit] every outage
-
-^ What would have tipped you off that things were about to break?
-
----
-
-## [fit] 1: reactive
+## [fit] reactive monitor
 ## [fit] monitor deeply
 ## [fit] fix things quickly
 
@@ -229,11 +181,36 @@ Diagram of the architecture, showing one box with couchdb.
 
 ---
 
-## [fit] 2: proactive
-## [fit] self-healing monitoring
+## [fit] proactive monitoring
+## [fit] self-healing
 ## [fit] \(also things don't break)
 
 ^ Monitor checks also fix problems where possible. Deeper problems fixed with engineering. Unit tests for your deployment.
+
+---
+
+# [fit] visibility is a prerequisite
+# [fit] but not a solution
+
+^ We're still not actually scaling. CouchDB is still falling over.
+
+---
+
+# [fit] step 4: redundancy
+# [fit] several couchdbs for reads
+# [fit] 1 for writes, 1 for public replication
+
+^ Separate writes from reads. Separate out replication.
+
+---
+
+# []
+
+# [fit] General lesson #3
+# [fit] Add monitoring after
+# [fit] every outage
+
+^ What would have tipped you off that things were about to break?
 
 ---
 
