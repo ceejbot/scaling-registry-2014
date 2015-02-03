@@ -86,15 +86,17 @@
 
 ---
 
+![fit](assets/original_registry.png)
+
+^ This is the starting architecture. The registry lives entirely inside a single CouchDB instance. Tarballs are base64-encoded attachments on package documents. The app logic is entirely implemented as javascript inside Couchdb. Ironically, there is 0 node in the registry.
+
+---
+
 # [fit] January 2013
 # [fit] 20K packages
 # [fit] .5 million dls/day
 
-^ The registry lives entirely inside a single CouchDB instance. Tarballs are base64-encoded attachments on package documents. The app logic is entirely implemented as javascript inside Couchdb. Ironically, there is 0 node in the registry. (Act 1. Our protagonist goes through her normal day.)
-
----
-
-Diagram of the architecture, showing one box with couchdb.
+^ There is no load to speak of. Practically anything could handle this. (Act 1. Our protagonist goes through her normal day.)
 
 ---
 
