@@ -94,14 +94,6 @@
 
 ---
 
-# [fit] January 2014
-# [fit] 60K packages
-# [fit] 8 million dls/day
-
-^ 3x the packages, 16x the dls. Act 2 begins. This is just past where it halted and caught fire, and our protagonist's life is changed forever.
-
----
-
 Diagram of the architecture, showing one box with couchdb.
 
 ---
@@ -140,6 +132,14 @@ Diagram of the architecture, showing one box with couchdb.
 ![fit](assets/arch_jan_2014.png)
 
 ^ January 2014. This was more or less holding up under the load, though there were still outages with absolutely no visibility into why.
+
+---
+
+# [fit] January 2014
+# [fit] 60K packages
+# [fit] 8 million dls/day
+
+^ 3x the packages, 16x the dls. Act 2 begins.
 
 ---
 
@@ -189,10 +189,18 @@ Diagram of the architecture, showing one box with couchdb.
 
 ---
 
+## [fit] monitoring is unit testing
+## [fit] Add monitoring after
+## [fit] every outage
+
+^ What would have tipped you off that things were about to break?
+
+---
+
 # [fit] visibility is a prerequisite
 # [fit] but not a solution
 
-^ We're still not actually scaling. CouchDB is still falling over.
+^ We're still not actually scaling. CouchDB is still falling over. But we have the information we need: we know what's hot, what's okay, what's unstable.
 
 ---
 
@@ -204,13 +212,11 @@ Diagram of the architecture, showing one box with couchdb.
 
 ---
 
-# []
+# [fit] step 5: automation
+# [fit] ansible
+# [fit] no server is special
 
-# [fit] General lesson #3
-# [fit] Add monitoring after
-# [fit] every outage
-
-^ What would have tipped you off that things were about to break?
+^ Chef, Puppet, Salt, Ansible: USE SOMETHING. No special snowflakes. All hosts are configurable remotely & can be replaced easily. Discipline. We do periodic exercises where we replace a server.
 
 ---
 
@@ -219,21 +225,44 @@ Diagram of the architecture, showing one box with couchdb.
 # [fit] Superficially
 # [fit] similar.
 
-^ Pretty reliable. We know when our providers are down before they do sometimes. Manta is gone-- tarballs are served from a file system behind nginx. Writes are separated from reads. Scaled by throwing hardware & $ at the problem.
+^ Pretty reliable. We know when our providers are down before they do sometimes. Writes are separated from reads. Scaled by throwing hardware & $ at the problem. One really big invisible change here.
+
+---
+
+June 2014 numbers here.
 
 ---
 
 # [fit] AWS / Ubuntu
 # [fit] 70/30 west/east split
-# [fit] 52 running instances, variable
+# [fit] 52 running instances, many side tasks
 
 ^ Another big change: we moved to Ubuntu on AWS with significant wins in compatibility & tooling.
 
 ---
 
+# [fit] step 6: simplification
+# [fit] now that it's boring
+# [fit] we can modify at leisure
+
+^ We understand the system fully. We have control of all of the pieces of the registry. We have visibility. So we can simplify.
+
+---
+
+# [fit] the goal is to be
+# [fit] BORING
+
+^ Being on-call should be boring. Heroics should NEVER be required. Putting out fires is a bad thing: avoid the fires in the first place.
+
+---
+
 ![fit](assets/registry_arch_nov2014.png)
 
-^ The registry today. WAY fewer instances & cheaper to run. Extra capacity for redundancy: if an AWS region goes down, we're fine.
+^ The registry today. Massively over capacity. Extra capacity for redundancy: if an AWS region goes down, we're fine. Known single points of failure.
+
+---
+
+Nov 2014 numbers here.
 
 ---
 
@@ -249,75 +278,50 @@ Diagram of the architecture, showing one box with couchdb.
 # [fit] haproxy / CouchDB
 # [fit] nginx + a filesystem
 
-^ Simple pieces with good visibility.
+^ Simple pieces with good visibility. The tarballs are now served the way they should be: from a filesystem by a simple webserver.
 
 ---
 
-# [fit] behind the scenes
-# [fit] ansible / nagios
-# [fit] InfluxDB+Grafana
+# [fit] where's the node?
 
-^ Grown-up ops habits.
+^ Node's secret shame: its package registry doesn't use node. Well it will.
 
 ---
 
-# [fit] General lesson #4
-# [fit] metrics
-# [fit] for everything
+# [fit] the node is on the way
 
-^ All of your services & instances should report metrics that can be visualized.
+^ The registry I run on my laptop looks nothing like that diagram & hasn't for a while. Now that operations are boring, we can do the development.
 
 ---
 
-## [fit] memory & cpu use
-## [fit] request latency
-## [fit] event counts
-
-^ Process restarts; bytes in & out of load balancers.
+John Freaking Madden diagram of R2.
 
 ---
 
-# [fit] metrics ==
-# [fit] visibility
+# [fit] registry 2
+# [fit] electric boogaloo
+# [fit] with 500% more node
 
-^ What is your system doing? What does it look like on a normal day? What are its trends? We saved $20K on our networking bandwidth bill by monitoring what our haproxies were doing & choking off a healthcheck gone mad.
-
----
-
-# [fit] metrics drive
-# [fit] monitoring
-
-^ This is the goal for me; not there yet.
+^ Moving application logic out of couchdb & into individual node processes. Moving the data into relational databases for flexible querying.
 
 ---
 
-# [fit] General lesson #5
-# [fit] automate
+# [fit] Scaling is about anticipating
+# [fit] the next set of demands
 
-^ Chef, Puppet, Salt, Ansible: USE SOMETHING.
-
----
-
-# [fit] no special snowflakes
-# [fit] every instance can be replaced
-
-^ All hosts are configurable remotely & can be replaced easily. Discipline. AWS reboot apocalypse was boring for us.
+^ You are going to want more from the registry. You're going to want private modules. You want to know download stats. You want better search. You want to know which module people are using to solve a problem you have.
 
 ---
 
-# [fit] General lesson #6
-# [fit] the goal is to be
-# [fit] BORING
-
-^ Being on-call should be boring. Heroics should NEVER be required. Putting out fires is a bad thing: avoid the fires in the first place.
+# [fit] scaling node
+# [fit] is exactly like scaling
+# [fit] everything else
 
 ---
 
-# [fit] if operations are
-# [fit] boring
-# [fit] you can do the dev
-
-^ replicate into relational dbs, improve searchability, add features: private modules. All of this is work that's possible now that our daily operations are boring.
+# Understand system.
+# Visibility into the system.
+#
 
 ---
 
