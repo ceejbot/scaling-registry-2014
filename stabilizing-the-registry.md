@@ -25,7 +25,7 @@
 
 ---
 
-# [fit] Feb 2013:
+# [fit] Feb 2014:
 # [fit] hired into a brand new company
 # [fit] to put out the fire
 
@@ -78,11 +78,11 @@
 
 ---
 
-# [fit] Jacques Marneweck
-# [fit] Benjamin Coe
-# [fit] Laurie Voss
+# [fit] this is the story of
+# [fit] a legacy system
+# [fit] becoming more flexible
 
-^ The team. I did none of this stuff alone. Jacques for SmartOS expertise. Ben is my comrade in dev ops arms. Laurie is our CTO.
+^ Why am I telling you this story.
 
 ---
 
@@ -97,6 +97,19 @@
 # [fit] .5 million dls/day
 
 ^ There is no load to speak of. Practically anything could handle this. (Act 1. Our protagonist goes through her normal day.)
+
+---
+
+# [fit] Oct 2013
+# [fit] 44K packages
+# [fit] 108 million dls/month
+# [fit] 3.6 million dls/day
+
+^ Then you all started adopting node, and what had worked for 2 years stopped working. Twice the number of packages, 7 times the usage. These numbers are not large, but it's a tipping point.
+
+---
+
+# [fit] and the saga begins
 
 ---
 
@@ -139,7 +152,7 @@
 
 # [fit] January 2014
 # [fit] 60K packages
-# [fit] 8 million dls/day
+# [fit] 6+ million dls/day
 
 ^ 3x the packages, 16x the dls. Act 2 begins.
 
@@ -175,7 +188,7 @@
 
 ---
 
-## [fit] reactive monitor
+## [fit] reactive monitoring
 ## [fit] monitor deeply
 ## [fit] fix things quickly
 
@@ -231,15 +244,19 @@
 
 ---
 
-June 2014 numbers here.
+# [fit] June 2014
+# [fit] 80K packages
+# [fit] 10 million dls/day
+
+^ We're handling this load easily.
 
 ---
 
-# [fit] AWS / Ubuntu
+# [fit] the midpoint twist:
+# [fit] now 100% on AWS/Ubuntu
 # [fit] 70/30 west/east split
-# [fit] 52 running instances, many side tasks
 
-^ Another big change: we moved to Ubuntu on AWS with significant wins in compatibility & tooling.
+^ As we automated configuration for each of these components, we moved it to AWS.
 
 ---
 
@@ -260,11 +277,15 @@ June 2014 numbers here.
 
 ![fit](assets/registry_arch_nov2014.png)
 
-^ The registry today. Massively over capacity. Extra capacity for redundancy: if an AWS region goes down, we're fine. Known single points of failure.
+^ The registry last fall. Massively over capacity. Extra capacity for redundancy: if an AWS region goes down, we're fine. Known single points of failure.
 
 ---
 
-Nov 2014 numbers here.
+# [fit] Nov 2014
+# [fit] 105K packages
+# [fit] 28 million dls/day peak
+
+^ We're handling this load easily with fewer servers, more cheaply. Bandwidth remains our major cost.
 
 ---
 
@@ -286,7 +307,7 @@ Nov 2014 numbers here.
 
 # [fit] where's the node?
 
-^ Node's secret shame: its package registry doesn't use node. Well it will.
+^ Node's secret shame: its package registry doesn't use much node. Yet.
 
 ---
 
