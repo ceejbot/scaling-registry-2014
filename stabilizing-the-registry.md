@@ -12,24 +12,9 @@
 
 ---
 
-# [fit] Roll back to the last
-# [fit] Node Summit, Dec 2013
-
----
-
-![original](assets/servers_down.jpg)
-
-# October 2013
-
-^ I was running a team writing node services & wondering how I could protect myself from npm outages. Thought I had to run a registry; that was too much trouble.
-
----
-
-# [fit] Feb 2014:
-# [fit] hired into a brand new company
-# [fit] to put out the fire
-
-^ Not just run a registry, but the registry. Ulp.
+# [fit] This is the story of a
+# [fit] plucky package registry
+# [fit] named npm
 
 ----
 
@@ -65,14 +50,15 @@
 # [fit] 129,796 packages
 # [fit] 239 GB package tarballs
 # [fit] 40 million package dls/day
-# [fit] 1500 req/sec, peak 3000
+# [fit] 1500 req/sec, peak 3200
 
-^ If I gave you those requirements as a greenfield project, you wouldn't have much trouble building a system that met them. The problem is that you never have a greenfield proj. You have legacy projects.
+^ If I gave you those requirements as a greenfield project, you wouldn't have much trouble building a system. The problem is that you never have a greenfield proj. You have legacy projects.
 
 ---
 
 # [fit] "Legacy"
-# [fit] Anything you've put into production
+# [fit] Anything you've put
+# [fit] into production
 
 ^ Legacy is inertia. It's mass that slows down change. Code in production can't be changed without understanding how the existing system works.
 
@@ -82,21 +68,29 @@
 # [fit] a legacy system
 # [fit] becoming more flexible
 
-^ Why am I telling you this story.
+^ The plucky little npm.
 
 ---
 
 ![fit](assets/original_registry.png)
 
-^ This is the starting architecture. The registry lives entirely inside a single CouchDB instance. Tarballs are base64-encoded attachments on package documents. The app logic is entirely implemented as javascript inside Couchdb. Ironically, there is 0 node in the registry.
+^ Here's our protagonist's starting point. This is the starting architecture. The registry lives entirely inside a single CouchDB instance. Tarballs are base64-encoded attachments on package documents. The app logic is entirely implemented as javascript inside Couchdb. NO NODE
 
 ---
 
-# [fit] January 2013
+# [fit] ![inline](assets/npm.png) January 2013
 # [fit] 20K packages
 # [fit] .5 million dls/day
 
-^ There is no load to speak of. Practically anything could handle this. (Act 1. Our protagonist goes through her normal day.)
+^ There is no load to speak of. Practically anything could handle this. Our little npm strolls through the day.
+
+---
+
+![original](assets/servers_down.jpg)
+
+# October 2013
+
+^ Then something happened: you all started adopting node.
 
 ---
 
@@ -109,15 +103,8 @@
 
 ---
 
-# [fit] and the saga begins
-
----
-
-# [fit] cache
-# [fit] rules everything
-# [fit] around me
-
-^ Put it behind a CDN. Data not changing? CACHE IT. (Changed the npm application so more of the data is immutable, e.g., you can't change a version once you've published it. We can cache even more!) CDN benefits.
+# [fit] our plucky little registry
+# [fit] had to change
 
 ---
 
@@ -129,18 +116,26 @@
 
 ---
 
-# [fit] don't make your
-# [fit] poor database
-# [fit] do things it's bad at
+# [fit] cache rules
+# [fit] everything
+# [fit] around me
 
-^ Binary blobs don't belong in dbs that need to base64 encode them.
+^ Put it behind a CDN. Data not changing? CACHE IT. (Changed the npm application so more of the data is immutable, e.g., you can't change a version once you've published it. We can cache even more!) CDN benefits.
 
 ---
 
 # [fit] step 2: tarballs
 # [fit] get them out of couchdb
 
-^ Out of couchdb & into Joyent's Manta, an object store backed by postgres with a nice API. They're now sitting on a filesystem served by nginx. 1 aws instance is more than capable of handling what load gets through from Fastly, but we have several for region redundancy. Node does the work of pulling tarballs out.
+^ Application changes begin.
+
+---
+
+# [fit] tarballs are huge!
+# [fit] couch runs faster without them
+# [fit] base64 decoding is work.
+
+^ Binary blobs don't belong in dbs that need to base64 encode them.
 
 ----
 
@@ -150,7 +145,7 @@
 
 ---
 
-# [fit] January 2014
+# [fit] ![inline](assets/npm.png) January 2014
 # [fit] 60K packages
 # [fit] 6+ million dls/day
 
@@ -158,26 +153,11 @@
 
 ---
 
-# [fit] ![inline](assets/npm.png) February 2014
-# [fit] company founded
+# [fit] step 3: visibility
+# [fit] are things going wrong?
+# [fit] what's going wrong?
 
-^ It takes money to pay for the CDN & for dedicated engineering working on the rearchitecture.
-
----
-
-# [fit] hosted on Joyent/SmartOS
-# [fit] hand-built CouchDB + Spidermonkey
-# [fit] bash scripts to deploy
-
-^ Everything was hand-built. 10 special snowflake servers. This is when I arrive. PagerDuty account: first thing I did. Nagios all hooked up & monitoring basic host health. 10 hosts total.
-
----
-
-# [fit] step 3: monitoring
-# [fit] PagerDuty tells us about problems
-# [fit] Not Twitter.
-
-^ Nagios is a horror but it's state of the art, apparently, and it is solid enough to monitor your other monitoring systems.
+^ Nagios is a horror but it's state of the art, apparently, and it is solid enough to monitor your other monitoring systems. NOT TWITTER
 
 ---
 
@@ -219,11 +199,24 @@
 
 ---
 
+# [fit] act on what monitoring
+# [fit] and metrics reveal
+
+---
+
 # [fit] step 4: redundancy
 # [fit] several couchdbs for reads
 # [fit] 1 for writes, 1 for public replication
 
 ^ Separate writes from reads. Separate out replication.
+
+---
+
+# [fit] fewer responsibilities
+# [fit] for each piece
+# [fit] isolates errors
+
+^ In this case, we were able to discover that what we had thought was a load problem with couchdb was actually a *bug* in password generation at the Erlang layer.
 
 ---
 
@@ -244,7 +237,7 @@
 
 ---
 
-# [fit] June 2014
+# [fit] ![inline](assets/npm.png) June 2014
 # [fit] 80K packages
 # [fit] 10 million dls/day
 
@@ -268,20 +261,13 @@
 
 ---
 
-# [fit] the goal is to be
-# [fit] BORING
-
-^ Being on-call should be boring. Heroics should NEVER be required. Putting out fires is a bad thing: avoid the fires in the first place.
-
----
-
 ![fit](assets/registry_arch_nov2014.png)
 
 ^ The registry last fall. Massively over capacity. Extra capacity for redundancy: if an AWS region goes down, we're fine. Known single points of failure.
 
 ---
 
-# [fit] Nov 2014
+# [fit] ![inline](assets/npm.png) Nov 2014
 # [fit] 105K packages
 # [fit] 28 million dls/day peak
 
@@ -290,15 +276,15 @@
 ---
 
 # [fit] 50/50 AWS region split
-# [fit] haproxy to load balance
 # [fit] no AWS-specific magic
+# [fit] Ubuntu 14.04 Trusty
 
 ^ We use as few AWS features as possible to keep our options open.
 
 ---
 
-# [fit] Fastly: geoloc + cache
-# [fit] haproxy / CouchDB
+# [fit] Fastly: geoloc + varnish
+# [fit] haproxy + CouchDB
 # [fit] nginx + a filesystem
 
 ^ Simple pieces with good visibility. The tarballs are now served the way they should be: from a filesystem by a simple webserver.
@@ -311,9 +297,11 @@
 
 ---
 
-# [fit] the node is on the way
+# [fit] registry 2
+# [fit] electric boogaloo
+# [fit] with 500% more node
 
-^ The registry I run on my laptop looks nothing like that diagram & hasn't for a while. Now that operations are boring, we can do the development.
+^ The registry I run on my laptop looks nothing like that diagram & hasn't for a while. Now that operations are boring, we can do the development. Moving application logic out of couchdb & into individual node processes. Moving the data into relational databases for flexible querying.
 
 ---
 
@@ -323,24 +311,33 @@
 
 ---
 
-# [fit] registry 2
-# [fit] electric boogaloo
-# [fit] with 500% more node
+# [fit] haproxy ➜ node services
+# [fit] couchdb ➜ postgres
+# [fit] redis for caching
+# [fit] nginx + filesystem
 
-^ Moving application logic out of couchdb & into individual node processes. Moving the data into relational databases for flexible querying.
+^ The future stack. Might change, but correct in essentials.
 
 ---
 
-# [fit] Scaling is about anticipating
-# [fit] the next set of demands
+# [fit] more complicated
+# [fit] more flexible & redundant
+# [fit] more scaling dials to turn
 
-^ You are going to want more from the registry. You're going to want private modules. You want to know download stats. You want better search. You want to know which module people are using to solve a problem you have.
+---
+
+# [fit] excited about postgres
+# [fit] ad-hoc queries are fun
+
+^ There's a whole lot of fun data in the registry that we haven't had easy access to. In particular, live data about dependencies is going to be fun to make available to you on the website.
 
 ---
 
 # [fit] scaling node
 # [fit] is exactly like scaling
 # [fit] everything else
+
+^ recap!
 
 ---
 
@@ -350,13 +347,6 @@
 # [fit] add redundancy
 
 ^ Flexibility.
-
----
-
-# [fit] Goal: to be the most boring
-# [fit] part of your node experience
-
-^ Reliable. Something you don't think about because we're always there. I want to tempt you into relying on us even though if you're properly paranoid you shouldn't.
 
 ----
 
