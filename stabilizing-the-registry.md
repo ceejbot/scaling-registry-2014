@@ -317,7 +317,9 @@
 
 ---
 
-John Freaking Madden diagram of R2.
+![fit](assets/JOHN_F_MADDEN.png)
+
+^ Ah, there's the node.
 
 ---
 
@@ -342,16 +344,19 @@ John Freaking Madden diagram of R2.
 
 ---
 
-# Understand system.
-# Visibility into the system.
-#
+# [fit] Understand system
+# [fit] get visibility
+# [fit] cool down hot spots
+# [fit] add redundancy
+
+^ Flexibility.
 
 ---
 
 # [fit] Goal: to be the most boring
 # [fit] part of your node experience
 
-^ Reliable. Something you don't think about because we're always there.
+^ Reliable. Something you don't think about because we're always there. I want to tempt you into relying on us even though if you're properly paranoid you shouldn't.
 
 ----
 
