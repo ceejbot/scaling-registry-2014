@@ -271,7 +271,7 @@
 # [fit] 105K packages
 # [fit] 28 million dls/day peak
 
-^ We're handling this load easily with fewer servers, more cheaply. Bandwidth remains our major cost.
+^ We're handling this load easily with fewer servers, more cheaply. Bandwidth remains our major cost. Our plucky little registry is out of the woods.
 
 ---
 
@@ -293,7 +293,7 @@
 
 # [fit] where's the node?
 
-^ Node's secret shame: its package registry doesn't use much node. Yet.
+^ Node's secret shame: its package registry doesn't use much node. That's where the sequel movie comes in.
 
 ---
 
@@ -301,11 +301,11 @@
 # [fit] electric boogaloo
 # [fit] with 500% more node
 
-^ The registry I run on my laptop looks nothing like that diagram & hasn't for a while. Now that operations are boring, we can do the development. Moving application logic out of couchdb & into individual node processes. Moving the data into relational databases for flexible querying.
+^ The registry I run on my laptop looks nothing like that diagram & hasn't for a while. Now that operations are boring, we can do the development. Moving application logic out of couchdb & into individual node processes.
 
 ---
 
-![fit](assets/JOHN_F_MADDEN.png)
+![fit](assets/cli-architecture-2015-01.png)
 
 ^ Ah, there's the node.
 
@@ -323,6 +323,8 @@
 # [fit] more complicated
 # [fit] more flexible & redundant
 # [fit] more scaling dials to turn
+
+^ Each piece specializes in specific tasks, and is easy to understand.
 
 ---
 
