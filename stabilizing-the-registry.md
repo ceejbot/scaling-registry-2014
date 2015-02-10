@@ -7,8 +7,10 @@
 
 ![left](assets/bumper2_nasa_big.jpg)
 # [fit] C J Silverio
-## [fit] director of engineering
+## [fit] director of engineering, npm
 ## [fit] @ceejbot
+
+^ At the last summit, that wasn't my company or title. I was in the audience with you all, being very annoyed about npm.
 
 ---
 
@@ -16,11 +18,15 @@
 # [fit] plucky package registry
 # [fit] named npm
 
+^ My build & deploy relied on it, but it was flaky. Mirror it? Too much work! Then IsaacZS contacted me.
+
 ----
 
 # [fit] scaling problem
-# [fit] appearing as a
+# [fit] manifesting itself as a
 # [fit] stability problem
+
+^ It didn't look like a scaling problem, though. It looked like a stability problem. Scaling. Stability. What are these things? Before we join our plucky registry on its journey, let's define its problem.
 
 ---
 
@@ -28,7 +34,7 @@
 # [fit] capacity to meet
 # [fit] growing demands
 
-^ Definitions. Whatever form those demands take
+^ Whatever form those demands take. This is unique to every service. Some services have to serve a tiny amount of data really really fast; some can be slow but need reliability.
 
 ---
 
@@ -43,13 +49,19 @@
 # [fit] not falling over
 # [fit] under normal demand
 
-^ For bonus points, not falling over under peak demand.
+^ For bonus points, not falling over under peak demand. Scaling problems usually manifest this way. Services under load fail & failures cascade up & down the chain in surprising ways.
 
 ---
 
-# [fit] 129,796 packages
+# [fit] What's normal demand?
+
+^ What does this plucky little registry need to do to defeat the monster, win the command line, and return home in triumph?
+
+---
+
+# [fit] 129K packages
 # [fit] 239 GB package tarballs
-# [fit] 40 million package dls/day
+# [fit] 40 million pkg dls/day
 # [fit] 1500 req/sec, peak 3200
 
 ^ If I gave you those requirements as a greenfield project, you wouldn't have much trouble building a system. The problem is that you never have a greenfield proj. You have legacy projects.
@@ -68,7 +80,7 @@
 # [fit] a legacy system
 # [fit] becoming more flexible
 
-^ The plucky little npm.
+^ The plucky little npm needed to change to defeat its enemy.
 
 ---
 
@@ -86,15 +98,7 @@
 
 ---
 
-![original](assets/servers_down.jpg)
-
-# October 2013
-
-^ Then something happened: you all started adopting node.
-
----
-
-# [fit] Oct 2013
+# [fit] ![inline](assets/npm.png) Oct 2013
 # [fit] 44K packages
 # [fit] 108 million dls/month
 # [fit] 3.6 million dls/day
@@ -103,8 +107,16 @@
 
 ---
 
+![original](assets/servers_down.jpg)
+
+^ Whoops.
+
+---
+
 # [fit] our plucky little registry
 # [fit] had to change
+
+^ I am now going to deep dive into how. You ready?
 
 ---
 
@@ -112,7 +124,7 @@
 # [fit] Put Fastly.com
 # [fit] in front of the registry
 
-^ Obvious? Yes! This put out the worst of the fires. The problem is that it costs $ to do this, and side projects run on donated hosting don't have $.
+^ Obvious? Yes! This put out the worst of the fires. Cache the tarballs! They don't change!
 
 ---
 
@@ -120,7 +132,7 @@
 # [fit] everything
 # [fit] around me
 
-^ Put it behind a CDN. Data not changing? CACHE IT. (Changed the npm application so more of the data is immutable, e.g., you can't change a version once you've published it. We can cache even more!) CDN benefits.
+^ Data not changing? CACHE IT. (Changed the npm application so more of the data is immutable, e.g., you can't change a version once you've published it. We can cache even more!)
 
 ---
 
@@ -132,10 +144,10 @@
 ---
 
 # [fit] tarballs are huge!
-# [fit] couch runs faster without them
+# [fit] couch runs better without them
 # [fit] base64 decoding is work.
 
-^ Binary blobs don't belong in dbs that need to base64 encode them.
+^ Binary blobs don't belong in dbs that need to base64 encode them. Also, they bloated the db to the point where view gen & compaction took forever. It also took a long time to replicate.
 
 ----
 
@@ -161,13 +173,6 @@
 
 ---
 
-# [fit] Monitoring
-# [fit] & alerts
-
-^  is a host up/down is a boring question. you need to monitor your user's experience. is the service working from their POV? if not, what are the telltales?
-
----
-
 ## [fit] reactive monitoring
 ## [fit] monitor deeply
 ## [fit] fix things quickly
@@ -180,7 +185,7 @@
 ## [fit] self-healing
 ## [fit] \(also things don't break)
 
-^ Monitor checks also fix problems where possible. Deeper problems fixed with engineering. Unit tests for your deployment.
+^ Monitor checks also fix problems where possible. Deeper problems fixed with engineering.
 
 ---
 
@@ -202,11 +207,13 @@
 # [fit] act on what monitoring
 # [fit] and metrics reveal
 
+^ Not always pointing at the real problem, but acting produces more information.
+
 ---
 
 # [fit] step 4: redundancy
-# [fit] several couchdbs for reads
-# [fit] 1 for writes, 1 for public replication
+# [fit] several CouchDBs!
+# [fit] reads, writes, & replication
 
 ^ Separate writes from reads. Separate out replication.
 
@@ -216,7 +223,7 @@
 # [fit] for each piece
 # [fit] isolates errors
 
-^ In this case, we were able to discover that what we had thought was a load problem with couchdb was actually a *bug* in password generation at the Erlang layer.
+^ In this case, we were able to discover that what we had thought was a load problem with couchdb was actually a *bug* in password encryption at the Erlang layer.
 
 ---
 
@@ -233,7 +240,7 @@
 # [fit] Superficially
 # [fit] similar.
 
-^ Pretty reliable. We know when our providers are down before they do sometimes. Writes are separated from reads. Scaled by throwing hardware & $ at the problem. One really big invisible change here.
+^ Pretty reliable. We know when our providers are down before they do sometimes. Writes are separated from reads. Scaled by throwing hardware & $ at the problem.
 
 ---
 
@@ -241,20 +248,12 @@
 # [fit] 80K packages
 # [fit] 10 million dls/day
 
-^ We're handling this load easily.
-
----
-
-# [fit] the midpoint twist:
-# [fit] now 100% on AWS/Ubuntu
-# [fit] 70/30 west/east split
-
-^ As we automated configuration for each of these components, we moved it to AWS.
+^ We're handling this load easily.  Too many servers; more expensive than I liked.
 
 ---
 
 # [fit] step 6: simplification
-# [fit] now that it's boring
+# [fit] now that it's not on fire
 # [fit] we can modify at leisure
 
 ^ We understand the system fully. We have control of all of the pieces of the registry. We have visibility. So we can simplify.
@@ -301,22 +300,22 @@
 # [fit] electric boogaloo
 # [fit] with 500% more node
 
-^ The registry I run on my laptop looks nothing like that diagram & hasn't for a while. Now that operations are boring, we can do the development. Moving application logic out of couchdb & into individual node processes.
+^ The registry I run on my laptop looks nothing like that diagram & hasn't for a while. Now that operations are boring, we can do the development. Private modules. What we shipped last year as npm enterprise is 1 piece of this.
 
 ---
 
 ![fit](assets/cli-architecture-2015-01.png)
 
-^ Ah, there's the node.
+^ Ah, there's the node. Microservices, lots of redundancy. Moving application logic out of couchdb & into individual node processes.
 
 ---
 
-# [fit] haproxy ➜ node services
+# [fit] haproxy + node services
 # [fit] couchdb ➜ postgres
 # [fit] redis for caching
 # [fit] nginx + filesystem
 
-^ The future stack. Might change, but correct in essentials.
+^ The future stack. Might change, but correct in essentials. CouchDB is still our heart, and it feeds everything else.
 
 ---
 
@@ -339,7 +338,7 @@
 # [fit] is exactly like scaling
 # [fit] everything else
 
-^ recap!
+^ I'm going to be scaling node over the coming year, not a little network of databases!
 
 ---
 
